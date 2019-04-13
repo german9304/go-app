@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+
+	"github.com/shopcart/apiserver"
 )
 
 func helloFunc(w http.ResponseWriter, r *http.Request) {
@@ -14,8 +16,8 @@ func helloFunc(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-
-	http.HandleFunc("/", helloFunc)
+	app := apiserver.App{}
+	app.Get("/", helloFunc)
 	err := http.ListenAndServe(":8081", nil)
 	log.Fatal(err)
 }
