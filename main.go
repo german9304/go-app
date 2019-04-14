@@ -2,17 +2,20 @@ package main
 
 import (
 	"fmt"
+	"html/template"
 	"log"
 	"net/http"
 
 	"github.com/shopcart/apiserver"
+	"github.com/shopcart/helper"
 )
 
 func helloFunc(w http.ResponseWriter, r *http.Request) {
-	_, err := fmt.Fprintf(w, "hello %v ", "worlds")
+	t, err := template.ParseFiles("./templates/base.html")
 	if err != nil {
 		log.Fatal(err)
 	}
+	helper.RenderTemplate(w, t, "")
 }
 
 func aboutFunc(w http.ResponseWriter, r *http.Request) {
