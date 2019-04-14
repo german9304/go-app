@@ -6,9 +6,9 @@ import (
 )
 
 // appI interface for App
-type appI interface {
-	get(http.HandlerFunc)
-	post(http.HandlerFunc)
+type AppI interface {
+	Get(pattern string, fn http.HandlerFunc)
+	Post(pattern string, fn http.HandlerFunc)
 }
 
 // App structure reprensets http methods
