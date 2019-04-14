@@ -48,6 +48,6 @@ func topProducts(w http.ResponseWriter, r *http.Request) {
 func InitApp(app apiserver.AppI) {
 	app.Get("/products/", products)
 	app.Get("/", products)
-	app.Get("/create-product/", createProduct)
+	app.Route("/create-product/", createProduct)
 	app.Get("/top-products/", topProducts)
 }
