@@ -1,34 +1,28 @@
 package main
 
 import (
-	"fmt"
 	"html/template"
 	"log"
 	"net/http"
 
 	"github.com/shopcart/apiserver"
 	"github.com/shopcart/helper"
+	"github.com/shopcart/models"
 )
 
-func helloFunc(w http.ResponseWriter, r *http.Request) {
-	t, err := template.ParseFiles("./templates/base.html")
-	if err != nil {
-		log.Fatal(err)
-	}
-	helper.RenderTemplate(w, t, "")
-}
+var pT = template.Must(template.ParseFiles("./templates/base.html", "./templates/products/products.html"))
 
-func aboutFunc(w http.ResponseWriter, r *http.Request) {
-	_, err := fmt.Fprintf(w, "about %v ", "page")
-	if err != nil {
-		log.Fatal(err)
-	}
+func productFunc(w http.ResponseWriter, r *http.Request) {
+	helper.RenderTemplate(w, pT, models.DataModels)
+
 }
 
 func main() {
+	log.Println(models.DataModels.Products)
 	var app apiserver.AppI = &apiserver.App{}
-	app.Get("/", helloFunc)
-	app.Get("/about/", aboutFunc)
-	err := http.ListenAndServe(":8081", nil)
+	app.Get("/", productFunc)
+	fs := http.FileServer(http.Dir("./static/"))
+	http.Handle("/static/", http.StripPrefix("/static/", fs))
+	err := http.ListenAndServe(":8080", nil)
 	log.Fatal(err)
 }

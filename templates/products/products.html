@@ -1,0 +1,33 @@
+
+{{ define "styles" }} 
+<link
+    rel="stylesheet"
+    href="/static/css/products.css"
+/>
+{{ end }}
+{{ define "main" }}
+<article id="store">
+  <section id="store-products-section">
+    <h1 id="stores-header">Products</h1>
+    <section id="products">
+      {{ range .Products }}
+      <section class="product">
+        <h1 class="product-section-header">
+          <a class="select-product" href="#">
+            <span>{{ .Name }}</span>
+          </a>
+        </h1>
+        <section class="pdct content">
+          <p class="information">{{ .Description }}</p>
+        </section>
+      </section>
+      {{ end }}
+    </section>
+    <footer id="store-products-footer">
+      <section id="store-secton">
+        <p>pages from 1 to 3</p>
+      </section>
+    </footer>
+  </section>
+</article>
+{{ end }}
