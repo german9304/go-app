@@ -1,0 +1,36 @@
+{{ define "styles" }}
+<link
+    rel="stylesheet"
+    href="/static/css/topstores.css"
+/>
+{{ end }}
+
+{{ define "main" }} 
+  <section id="top-products">
+    <section id="products-content">
+      <header id="top-product-header">
+          <h1 class="top-product-h1">TOP 5 STORES</h1>
+      </header>
+      <section id="products">
+        <ul id="product-headers">
+          <li class="name">Name</li>
+          <li class="likes">Likes</li>
+          <li class="description">Description</li>
+        </ul>
+        {{ range .Products }}
+          <section class="product">
+            <header>
+                <h1 class="product-header">{{ .Name }}</h1>
+            </header>
+            <section class="product-likes">
+              <p>{{ .Likes }}</p>
+            </section>
+            <section class="product-description">
+                <p>{{ .Description }}</p>
+            </section>
+          </section>
+        {{ end }}
+    </section>
+    </section>
+  </section>
+{{ end }}

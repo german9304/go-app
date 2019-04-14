@@ -1,0 +1,32 @@
+{{ define "styles" }} 
+<link
+    rel="stylesheet"
+    href="/static/css/product.css"
+/>
+{{ end }}
+{{ define "main" }}
+  <section id="product">
+    <section id="selected-product">
+      <header id="product-header" >
+        <h1 >{{ .Name }}</h1>
+      </header>
+      <!-- <section id="likes-area">
+      </section> -->
+      <form action="" id="form-review__comments">
+          <section class="review-comments-textarea">
+            <textarea name="comment" name="comment" id="" cols="30" rows="3"></textarea>
+          </section>
+          <section id="submit-review">
+            <p class="likes">{{ .Likes }} likes</p>
+            <button type="submit" class="btn">Submit review</button>
+          </section>
+      </form>
+      <section id="product-reviews">
+      </section>
+    </section>
+  </section>
+{{ end }}
+{{ define "script" }} 
+<script src="#"></script>
+{{ end }}
+

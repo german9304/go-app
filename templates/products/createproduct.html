@@ -1,0 +1,30 @@
+{{ define "styles" }}
+<link
+    rel="stylesheet"
+    href="/static/css/products.css"
+/>
+{{ end }}
+{{ define "main" }}
+<section id="create-product">
+  <form method="post" id="create-form">
+    <header>
+      <h1>Add Product</h1>
+    </header>
+    <div class="form form-group-name">
+      <label for="product-name">Name</label>
+      <input id="product-name" autocomplete="off" name="name" type="text" />
+    </div>
+    <div class="form form-group-quantity">
+      <label for="product-quantity">Quantity</label>
+      <input type="text" autocomplete="off"  id="product-quantity" name="quantity" />
+    </div>
+    <div class="form form-group-description">
+      <label for="product-description">Description</label>
+      <textarea rows="3" autocomplete="off"  cols="30" id="product-description" name="description"></textarea>
+    </div>
+    <div class="form form-group-btn">
+      <button id="create-btn">submit</button>
+    </div>
+  </form>
+</section>
+{{ end }}

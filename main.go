@@ -10,7 +10,7 @@ import (
 	"github.com/shopcart/models"
 )
 
-var pT = template.Must(template.ParseFiles("./templates/base.html", "./templates/products/products.html"))
+var pT = template.Must(template.ParseFiles("./templates/base.html", "./templates/products/topstores.html"))
 
 func productFunc(w http.ResponseWriter, r *http.Request) {
 	helper.RenderTemplate(w, pT, models.DataModels)
