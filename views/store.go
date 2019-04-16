@@ -1,10 +1,12 @@
 package views
 
 import (
+	"fmt"
+	"log"
 	"net/http"
 	"os"
-
 	"path"
+	"strconv"
 
 	"github.com/shopcart/apiserver"
 	"github.com/shopcart/helper"
@@ -25,6 +27,7 @@ var joinFiles = map[string]string{
 
 var productTemplates = helper.GenerateTemplatePath(baseTemplate, joinFiles)
 
+// TODO: Finish product routes
 //
 func products(w http.ResponseWriter, r *http.Request) {
 	var pt = productTemplates["products"]
@@ -32,9 +35,27 @@ func products(w http.ResponseWriter, r *http.Request) {
 	helper.RenderTemplate(w, pt, productsModel)
 }
 
+// createProduct creates a new Product with HTTP POST
 func createProduct(w http.ResponseWriter, r *http.Request) {
 	var pt = productTemplates["createProduct"]
 	productsModel := models.DataModels
+	if r.Method == "POST" {
+		fmt.Println("create product")
+		// r.ParseForm()
+		name := r.FormValue("name")
+		quantity := r.FormValue("quantity")
+		description := r.FormValue("description")
+
+		qty, err := strconv.Atoi(quantity)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		product := models.Product{Name: name, Quantity: qty, Description: description}
+		fmt.Printf("New Product: %v", product)
+
+		fmt.Printf("quantity is %v \n", quantity)
+	}
 	helper.RenderTemplate(w, pt, productsModel)
 }
 
@@ -44,8 +65,8 @@ func topProducts(w http.ResponseWriter, r *http.Request) {
 	helper.RenderTemplate(w, pt, productsModel)
 }
 
-// InitApp initializes products app, adapter pattern
-func InitApp(app apiserver.AppI) {
+// InitStoreApp initializes products app, adapter pattern
+func InitStoreApp(app apiserver.AppI) {
 	app.Get("/products/", products)
 	app.Get("/", products)
 	app.Route("/create-product/", createProduct)

@@ -5,12 +5,13 @@ type Product struct {
 	Name        string
 	Description string
 	Likes       int
+	Quantity    int
 }
 
 // Elements variable
 var Elements = []Product{
-	Product{"Socks", "Nice socks, and are recommended!", 10},
-	Product{"Jeans", "Nice Jeans, and are recommended!", 23},
+	Product{Name: "Socks", Description: "Nice socks, and are recommended!", Quantity: 10},
+	Product{Name: "Jeans", Description: "Nice Jeans, and are recommended!", Quantity: 23},
 }
 
 // Data struct represents product
@@ -18,4 +19,5 @@ type Data struct {
 	Products []Product
 }
 
+// DataModels reprensets model from the app
 var DataModels = Data{Elements}
