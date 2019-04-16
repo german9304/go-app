@@ -1,0 +1,28 @@
+{{ define "styles" }}
+<link
+    rel="stylesheet"
+    href="/static/css/auth.css"
+/>
+{{ end }}
+{{ define "main" }}
+<section id="register-form-section">
+    <form method="post" id="register-form">
+        <h1>Register</h1>
+        <section class="form form-group">
+            <label for="username">username</label>
+            <input type="text" id="username" name="username">
+        </section>
+        <section class="form form-group">
+                <label for="username">email</label>
+            <input type="text" id="email" name="email">
+        </section>
+        <section class="form-form-grup">
+                <label for="username">password</label>
+            <input type="password" id="password" name="password">
+        </section>
+        <section class="form form-group">
+            <button id="btn" class="btn-submit">register</button>
+        </section>
+    </form>
+</section>
+{{ end }}

@@ -17,6 +17,7 @@ func main() {
 	var app apiserver.AppI = &apiserver.App{}
 	app.Get("/test", productFunc)
 	views.InitStoreApp(app)
+	views.InitAuthApp(app)
 	fs := http.FileServer(http.Dir("./static/"))
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
 	err := http.ListenAndServe(":8080", nil)
