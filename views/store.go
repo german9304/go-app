@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"os"
 	"path"
 	"strconv"
 
@@ -13,10 +12,7 @@ import (
 	"github.com/shopcart/models"
 )
 
-var curr, _ = os.Getwd()
-var baseTemplate = path.Join(curr, "templates", "base.html")
-
-var productPath = path.Join(curr, "templates", "products")
+var productPath = "products"
 
 var joinProductFiles = map[string]string{
 	"product":       path.Join(productPath, "product.html"),
@@ -25,7 +21,7 @@ var joinProductFiles = map[string]string{
 	"createProduct": path.Join(productPath, "createproduct.html"),
 }
 
-var productTemplates = helper.GenerateTemplatePath(baseTemplate, joinProductFiles)
+var productTemplates = helper.GenerateTemplatePath("base.html", joinProductFiles)
 
 // TODO: Finish product routes
 //
@@ -67,6 +63,8 @@ func topProducts(w http.ResponseWriter, r *http.Request) {
 
 // InitStoreApp initializes products app, adapter pattern
 func InitStoreApp(app apiserver.AppI) {
+	// p := path.Join("templates/app", "products")
+	// fmt.Println(curr)
 	app.Get("/products/", products)
 	app.Get("/", products)
 	app.Route("/create-product/", createProduct)

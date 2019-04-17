@@ -2,7 +2,6 @@ package views
 
 import (
 	"net/http"
-	"os"
 	"path"
 
 	"github.com/shopcart/apiserver"
@@ -10,17 +9,17 @@ import (
 	"github.com/shopcart/models"
 )
 
-var currAuth, _ = os.Getwd()
-var baseAuthTemplate = path.Join(currAuth, "templates", "base.html")
+// var currAuth, _ = os.Getwd()
+// var baseAuthTemplate = path.Join(currAuth, "templates", "base.html")
 
-var authPath = path.Join(currAuth, "templates", "auth")
+var authPath = "auth"
 
 var joinAuthFiles = map[string]string{
 	"login":    path.Join(authPath, "login.html"),
 	"register": path.Join(authPath, "register.html"),
 }
 
-var authTemplates = helper.GenerateTemplatePath(baseAuthTemplate, joinAuthFiles)
+var authTemplates = helper.GenerateTemplatePath("base.html", joinAuthFiles)
 
 // login handler
 func login(w http.ResponseWriter, r *http.Request) {
