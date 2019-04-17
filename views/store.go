@@ -35,7 +35,7 @@ func products(w http.ResponseWriter, r *http.Request) {
 func createProduct(w http.ResponseWriter, r *http.Request) {
 	pt := productTemplates["createProduct"]
 	productsModel := models.DataModels
-	if r.Method == "POST" {
+	if r.Method == http.MethodPost {
 		fmt.Println("create product")
 		// r.ParseForm()
 		name := r.FormValue("name")
@@ -55,6 +55,13 @@ func createProduct(w http.ResponseWriter, r *http.Request) {
 	helper.RenderTemplate(w, pt, productsModel)
 }
 
+// product handler
+func product(w http.ResponseWriter, r *http.Request) {
+	pt := productTemplates["product"]
+	productsModel := models.DataModels
+	helper.RenderTemplate(w, pt, productsModel)
+}
+
 func topProducts(w http.ResponseWriter, r *http.Request) {
 	pt := productTemplates["topProducts"]
 	productsModel := models.DataModels
@@ -67,6 +74,7 @@ func InitStoreApp(app apiserver.AppI) {
 	// fmt.Println(curr)
 	app.Get("/products/", products)
 	app.Get("/", products)
-	app.Route("/create-product/", createProduct)
+	app.Route("/create-product/", loginRequired(createProduct))
 	app.Get("/top-products/", topProducts)
+	app.Route("/product/", loginRequired(product))
 }
