@@ -1,0 +1,72 @@
+
+:root {
+  --color-fontw: white;
+  --store-color: white;
+  --font-nav: 'Raleway', sans-serif;
+  --store-header: 'Archivo Black', sans-serif;
+  --font-store: 'Montserrat', sans-serif;
+}
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-color: rgba(206, 224, 224, 0.445);
+}
+ul {
+  padding: 0;
+  margin: 0;
+}
+a {
+  text-decoration: none;
+  border: none;
+}
+li {
+  list-style: none;
+}
+#store-app-nav {
+ margin: 0 0 30px 0;
+}
+
+#nav-list {
+  display: flex;
+}
+#nav-list > * {
+  flex: 1;
+  border: 1px solid rgba(200, 255, 255, 0.1);
+  cursor: pointer;
+}
+
+#nav-list li {
+  display: flex;
+  /* justify-content: center; */
+  /* align-items: center; */
+  background: rgb(39, 49, 88);
+}
+#nav-list li:hover {
+  background: rgb(29, 35, 255);
+}
+.nav a {
+  /* border: solid 1px red; */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 5px 0 5px 0;
+  flex: 1;
+}
+
+.nav span {
+  /* border: solid 1px blue; */
+  display: block;
+  color: var(--color-fontw);
+  font-family: var(--font-nav);
+}
+
+.material-icons {
+  font-size: 2rem;
+  color: var(--color-fontw);
+}
+
+

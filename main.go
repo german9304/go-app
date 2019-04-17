@@ -1,31 +1,25 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 
 	"github.com/shopcart/apiserver"
+	"github.com/shopcart/views"
 )
 
-func helloFunc(w http.ResponseWriter, r *http.Request) {
-	_, err := fmt.Fprintf(w, "hello %v ", "worlds")
-	if err != nil {
-		log.Fatal(err)
-	}
-}
+func productFunc(w http.ResponseWriter, r *http.Request) {
 
-func aboutFunc(w http.ResponseWriter, r *http.Request) {
-	_, err := fmt.Fprintf(w, "about %v ", "page")
-	if err != nil {
-		log.Fatal(err)
-	}
 }
 
 func main() {
+	// log.Println(models.DataModels.Products)
 	var app apiserver.AppI = &apiserver.App{}
-	app.Get("/", helloFunc)
-	app.Get("/about/", aboutFunc)
-	err := http.ListenAndServe(":8081", nil)
+	app.Get("/test", productFunc)
+	views.InitStoreApp(app)
+	views.InitAuthApp(app)
+	fs := http.FileServer(http.Dir("./static/"))
+	http.Handle("/static/", http.StripPrefix("/static/", fs))
+	err := http.ListenAndServe(":8080", nil)
 	log.Fatal(err)
 }
