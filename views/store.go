@@ -1,6 +1,7 @@
 package views
 
 import (
+	"database/sql"
 	"fmt"
 	"log"
 	"net/http"
@@ -28,6 +29,26 @@ var productTemplates = helper.GenerateTemplatePath("base.html", joinProductFiles
 func products(w http.ResponseWriter, r *http.Request) {
 	pt := productTemplates["products"]
 	productsModel := models.DataModels
+	db, ok := apiserver.Global["db"]
+	if !ok {
+		log.Fatal("element not found")
+	}
+	rows, err := db.(*sql.DB).Query("SELECT * FROM USERS")
+	if err != nil {
+		log.Fatal(err)
+	}
+	for rows.Next() {
+		var (
+			id       string
+			email    string
+			username string
+			password string
+		)
+		rows.Scan(&id, &email, &username, &password)
+
+		log.Printf("id: %v, email: %v, username: %v , password: %v",
+			id, email, username, password)
+	}
 	helper.RenderTemplate(w, pt, productsModel)
 }
 

@@ -5,6 +5,11 @@ import (
 	"net/http"
 )
 
+var (
+	// Global map is a global map to store global variables
+	Global = make(map[string]interface{})
+)
+
 // AppI interface for App
 type AppI interface {
 	Get(pattern string, fn http.HandlerFunc)
