@@ -18,6 +18,11 @@ type userdb struct {
 	Password string
 }
 
+// Db structure represents db
+type Db struct {
+	db *sql.DB
+}
+
 const (
 	dbname = "mydb"
 	port   = 5432
@@ -28,6 +33,7 @@ var (
 	user        userdb
 	db          *sql.DB
 	err         error
+	data        Db
 )
 
 func readFile() []byte {
@@ -54,6 +60,7 @@ func init() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
 	log.Println("init db")
 }
 
