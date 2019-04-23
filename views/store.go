@@ -68,8 +68,19 @@ func createProduct(w http.ResponseWriter, r *http.Request) {
 // product handler
 func product(w http.ResponseWriter, r *http.Request) {
 	pt := productTemplates["product"]
-	productsModel := models.DataModels
-	helper.RenderTemplate(w, pt, productsModel)
+	query := r.FormValue("id")
+	log.Println(query)
+	db, ok := apiserver.Global["db"]
+	if !ok {
+		log.Fatal("element not found")
+	}
+	id, err := strconv.Atoi(query)
+	if err != nil {
+		log.Fatal(err)
+	}
+	product := models.GetProduct(db.(*sql.DB), id)
+	log.Println(product.Name)
+	helper.RenderTemplate(w, pt, product)
 }
 
 func topProducts(w http.ResponseWriter, r *http.Request) {

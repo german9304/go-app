@@ -20,6 +20,7 @@ func GetAllProducts(db *sql.DB) []Product {
 	if err != nil {
 		log.Fatal(err)
 	}
+	defer rows.Close()
 	var products []Product
 	for rows.Next() {
 		product := Product{}
@@ -30,6 +31,17 @@ func GetAllProducts(db *sql.DB) []Product {
 		products = append(products, product)
 	}
 	return products
+}
+
+// GetProduct gets pne product from database
+func GetProduct(db *sql.DB, productID int) Product {
+	row := db.QueryRow("SELECT id, name, likes, description, quantity FROM PRODUCT WHERE id = $1", productID)
+	product := Product{}
+	err := row.Scan(&product.ID, &product.Name, &product.Likes, &product.Description, &product.Quantity)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return product
 }
 
 // Elements variable
