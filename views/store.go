@@ -74,8 +74,17 @@ func product(w http.ResponseWriter, r *http.Request) {
 
 func topProducts(w http.ResponseWriter, r *http.Request) {
 	pt := productTemplates["topProducts"]
-	productsModel := models.DataModels
-	helper.RenderTemplate(w, pt, productsModel)
+	db, ok := apiserver.Global["db"]
+	if !ok {
+		log.Fatal("element not found")
+	}
+	products := models.GetAllProducts(db.(*sql.DB))[:5]
+	log.Println(products)
+	type data struct {
+		Products []models.Product
+	}
+	contextData := data{products}
+	helper.RenderTemplate(w, pt, contextData)
 }
 
 // InitStoreApp initializes products app, adapter pattern
