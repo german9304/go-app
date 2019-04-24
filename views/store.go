@@ -33,7 +33,8 @@ func products(w http.ResponseWriter, r *http.Request) {
 		log.Fatal("element not found")
 	}
 	products := models.GetAllProducts(db.(*sql.DB))
-	log.Println(products)
+	// log.Println(products)
+	log.Println("printing products route")
 	type data struct {
 		Products []models.Product
 	}
@@ -56,7 +57,12 @@ func createProduct(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			log.Fatal(err)
 		}
-
+		db, ok := apiserver.Global["db"]
+		if !ok {
+			log.Fatal("element not found")
+		}
+		res := models.InsertProduct(db.(*sql.DB), qty, 1, name, description)
+		log.Println(res)
 		product := models.Product{Name: name, Quantity: qty, Description: description}
 		fmt.Printf("New Product: %v", product)
 
@@ -67,6 +73,7 @@ func createProduct(w http.ResponseWriter, r *http.Request) {
 
 // product handler
 func product(w http.ResponseWriter, r *http.Request) {
+	log.Println("product printing route")
 	pt := productTemplates["product"]
 	query := r.FormValue("id")
 	log.Println(query)
@@ -79,11 +86,13 @@ func product(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err)
 	}
 	product := models.GetProduct(db.(*sql.DB), id)
-	log.Println(product.Name)
+	// log.Println(product.Name)
+	log.Println("printing in product route")
 	helper.RenderTemplate(w, pt, product)
 }
 
 func topProducts(w http.ResponseWriter, r *http.Request) {
+	log.Println("top products")
 	pt := productTemplates["topProducts"]
 	db, ok := apiserver.Global["db"]
 	if !ok {
@@ -102,9 +111,10 @@ func topProducts(w http.ResponseWriter, r *http.Request) {
 func InitStoreApp(app apiserver.AppI) {
 	// p := path.Join("templates/app", "products")
 	// fmt.Println(curr)
-	app.Get("/products/", products)
+	log.Println("printing here")
 	app.Get("/", products)
-	app.Route("/create-product/", loginRequired(createProduct))
-	app.Get("/top-products/", topProducts)
-	app.Route("/product/", loginRequired(product))
+	app.Get("/products", products)
+	app.Route("/create-product", loginRequired(createProduct))
+	app.Get("/top-products", topProducts)
+	app.Route("/product", loginRequired(product))
 }

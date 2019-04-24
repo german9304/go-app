@@ -10,16 +10,21 @@ import (
 )
 
 func productFunc(w http.ResponseWriter, r *http.Request) {
+	log.Println("product func")
 
 }
 
+var app apiserver.AppI = &apiserver.App{}
+
 func main() {
 	// log.Println(models.DataModels.Products)
-	var app apiserver.AppI = &apiserver.App{}
 	db.InitDbApp()
+	http.HandleFunc("/test/", func(w http.ResponseWriter, r *http.Request) {
+		log.Println("test here")
+	})
 	app.Get("/test", productFunc)
-	views.InitStoreApp(app)
 	views.InitAuthApp(app)
+	views.InitStoreApp(app)
 	fs := http.FileServer(http.Dir("./static/"))
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
 	err := http.ListenAndServe(":8080", nil)

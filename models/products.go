@@ -3,6 +3,7 @@ package models
 import (
 	"database/sql"
 	"log"
+	"strings"
 )
 
 // Product structure represents model product
@@ -42,6 +43,19 @@ func GetProduct(db *sql.DB, productID int) Product {
 		log.Fatal(err)
 	}
 	return product
+}
+
+// InsertProduct inserts a row in product model
+func InsertProduct(db *sql.DB, quantity, userID int, name, description string) sql.Result {
+	var sb strings.Builder
+	sb.WriteString("INSERT INTO PRODUCT (name, description, quantity, user_id) ")
+	sb.WriteString("VALUES ($1, $2, $3, $4) ")
+	query := sb.String()
+	row, err := db.Exec(query, name, description, quantity, userID)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return row
 }
 
 // Elements variable

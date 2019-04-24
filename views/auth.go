@@ -58,6 +58,6 @@ func loginRequired(fn func(w http.ResponseWriter, r *http.Request)) http.Handler
 
 // InitAuthApp exports init auth app pattern
 func InitAuthApp(app apiserver.AppI) {
-	app.Get("/login/", login)
-	app.Get("/register/", register)
+	app.Get("/login", login)
+	app.Get("/register", register)
 }
