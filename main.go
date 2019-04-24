@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/shopcart/apiserver"
+	"github.com/shopcart/db"
 	"github.com/shopcart/views"
 )
 
@@ -15,6 +16,7 @@ func productFunc(w http.ResponseWriter, r *http.Request) {
 func main() {
 	// log.Println(models.DataModels.Products)
 	var app apiserver.AppI = &apiserver.App{}
+	db.InitDbApp()
 	app.Get("/test", productFunc)
 	views.InitStoreApp(app)
 	views.InitAuthApp(app)

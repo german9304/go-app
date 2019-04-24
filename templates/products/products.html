@@ -13,7 +13,7 @@
       {{ range .Products }}
       <section class="product">
         <h1 class="product-section-header">
-          <a class="select-product" href="#">
+          <a class="select-product" href="/product/?id={{.ID}}">
             <span>{{ .Name }}</span>
           </a>
         </h1>
