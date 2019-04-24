@@ -27,6 +27,9 @@ var productTemplates = helper.GenerateTemplatePath("base.html", joinProductFiles
 // TODO: Finish product routes
 //
 func products(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/" {
+		return
+	}
 	pt := productTemplates["products"]
 	db, ok := apiserver.Global["db"]
 	if !ok {
@@ -99,7 +102,6 @@ func topProducts(w http.ResponseWriter, r *http.Request) {
 		log.Fatal("element not found")
 	}
 	products := models.GetAllProducts(db.(*sql.DB))[:5]
-	log.Println(products)
 	type data struct {
 		Products []models.Product
 	}
