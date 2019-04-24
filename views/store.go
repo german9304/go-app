@@ -24,7 +24,7 @@ var joinProductFiles = map[string]string{
 
 var productTemplates = helper.GenerateTemplatePath("base.html", joinProductFiles)
 
-// TODO: Finish product routes
+// TODO: Finish product routes and fix route for products
 //
 func products(w http.ResponseWriter, r *http.Request) {
 	// The "/" pattern matches everything, so we need to check
@@ -72,6 +72,7 @@ func createProduct(w http.ResponseWriter, r *http.Request) {
 		fmt.Printf("New Product: %v", product)
 
 		fmt.Printf("quantity is %v \n", quantity)
+		http.Redirect(w, r, "/products", http.StatusFound)
 	}
 	helper.RenderTemplate(w, pt, productsModel)
 }
