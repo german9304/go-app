@@ -14,6 +14,8 @@ import (
 // var currAuth, _ = os.Getwd()
 // var baseAuthTemplate = path.Join(currAuth, "templates", "base.html")
 
+// TODO: Implement logout route
+
 var authPath = "auth"
 
 var joinAuthFiles = map[string]string{
@@ -61,6 +63,10 @@ func register(w http.ResponseWriter, r *http.Request) {
 	}
 	rt := authTemplates["register"]
 	helper.RenderTemplate(w, rt, models.DataModels)
+
+}
+
+func logout(w http.ResponseWriter, r *http.Request) {
 
 }
 
