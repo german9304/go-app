@@ -29,7 +29,7 @@ var productTemplates = helper.GenerateTemplatePath("base.html", joinProductFiles
 func products(w http.ResponseWriter, r *http.Request) {
 	// The "/" pattern matches everything, so we need to check
 	// that we're at the root here.
-	if r.URL.Path != "/" {
+	if r.URL.Path != "/" && r.URL.Path != "/products" {
 		return
 	}
 	pt := productTemplates["products"]
