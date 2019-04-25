@@ -35,6 +35,15 @@ func login(w http.ResponseWriter, r *http.Request) {
 		}
 		user := models.GetUser(db.(*sql.DB), email)
 		log.Println(user)
+		// Setting the cookie for session and testing
+		if user.Password == password {
+			userID := user.ID
+			cookie := http.Cookie{Name: "userId", Value: userID}
+			log.Println(cookie.Value)
+			log.Println("user is authenticated")
+			http.SetCookie(w, &cookie)
+			http.Redirect(w, r, "/products", http.StatusFound)
+		}
 	}
 	lt := authTemplates["login"]
 	helper.RenderTemplate(w, lt, models.DataModels)
@@ -55,10 +64,19 @@ func register(w http.ResponseWriter, r *http.Request) {
 
 }
 
-// LoginRequired checks if user is athenticated
+// LoginRequired checks if user is athenticated middleware
 func loginRequired(fn func(w http.ResponseWriter, r *http.Request)) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		log.Println("login required")
+		if r.Method == "POST" {
+			log.Println("login required")
+			cookie, err := r.Cookie("userId")
+			if err != nil {
+				log.Println(err)
+				http.Redirect(w, r, "/login", http.StatusFound)
+				return
+			}
+			log.Println(cookie)
+		}
 		fn(w, r)
 	}
 }

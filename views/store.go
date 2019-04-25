@@ -42,7 +42,7 @@ func products(w http.ResponseWriter, r *http.Request) {
 	log.Println("printing products route")
 	type data struct {
 		Products []models.Product
-		Name string
+		Name     string
 	}
 	contextData := data{products, "Juan"}
 	helper.RenderTemplate(w, pt, contextData)
