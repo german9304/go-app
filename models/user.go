@@ -3,6 +3,7 @@ package models
 import (
 	"database/sql"
 	"log"
+	"strings"
 )
 
 //User struct represents user model
@@ -29,4 +30,20 @@ func GetAllUsers(db *sql.DB) []User {
 		users = append(users, user)
 	}
 	return users
+}
+
+// GetUser gets user from the database
+func GetUser(db *sql.DB, email string) User {
+	var sb strings.Builder
+	sb.WriteString("SELECT * FROM USERS ")
+	sb.WriteString("WHERE email = $1 ")
+	query := sb.String()
+
+	row := db.QueryRow(query, email)
+	user := User{}
+	err := row.Scan(&user.ID, &user.Email, &user.Username, &user.Password)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return user
 }

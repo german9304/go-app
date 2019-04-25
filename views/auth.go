@@ -1,6 +1,7 @@
 package views
 
 import (
+	"database/sql"
 	"log"
 	"net/http"
 	"path"
@@ -28,6 +29,12 @@ func login(w http.ResponseWriter, r *http.Request) {
 		email := r.FormValue("email")
 		password := r.FormValue("password")
 		log.Println(email, password)
+		db, ok := apiserver.Global["db"]
+		if !ok {
+			log.Fatal("element not found")
+		}
+		user := models.GetUser(db.(*sql.DB), email)
+		log.Println(user)
 	}
 	lt := authTemplates["login"]
 	helper.RenderTemplate(w, lt, models.DataModels)
