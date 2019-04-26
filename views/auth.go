@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"path"
+	"strconv"
 
 	"github.com/shopcart/apiserver"
 	"github.com/shopcart/helper"
@@ -35,12 +36,15 @@ func login(w http.ResponseWriter, r *http.Request) {
 		if !ok {
 			log.Fatal("element not found")
 		}
-		user := models.GetUser(db.(*sql.DB), email)
+		user, err := models.GetUser(db.(*sql.DB), email)
+		if err != nil {
+			log.Fatal(err)
+		}
 		log.Println(user)
 		// Setting the cookie for session and testing
 		if user.Password == password {
-			userID := user.ID
-			cookie := http.Cookie{Name: "userId", Value: userID}
+			userID := int(user.ID)
+			cookie := http.Cookie{Name: "userId", Value: strconv.Itoa(userID)}
 			log.Println(cookie.Value)
 			log.Println("user is authenticated")
 			http.SetCookie(w, &cookie)
@@ -63,9 +67,13 @@ func register(w http.ResponseWriter, r *http.Request) {
 		if !ok {
 			log.Fatal("element not found")
 		}
-		row := models.CreateUser(db.(*sql.DB), email, username, password)
-		log.Println(row.LastInsertId())
-		http.Redirect(w, r, "/", http.StatusFound)
+		row, user, err := models.CreateUser(db.(*sql.DB), email, username, password)
+		if err == nil {
+			log.Println(row, user)
+			http.Redirect(w, r, "/", http.StatusFound)
+			return
+		}
+		log.Println("user already exits", err)
 	}
 	rt := authTemplates["register"]
 	helper.RenderTemplate(w, rt, models.DataModels)

@@ -8,7 +8,7 @@ import (
 
 //User struct represents user model
 type User struct {
-	ID       string
+	ID       int64
 	Email    string
 	Username string
 	Password string
@@ -33,7 +33,7 @@ func GetAllUsers(db *sql.DB) []User {
 }
 
 // GetUser gets user from the database
-func GetUser(db *sql.DB, email string) User {
+func GetUser(db *sql.DB, email string) (User, error) {
 	var sb strings.Builder
 	sb.WriteString("SELECT * FROM USERS ")
 	sb.WriteString("WHERE email = $1 ")
@@ -42,24 +42,28 @@ func GetUser(db *sql.DB, email string) User {
 	row := db.QueryRow(query, email)
 	user := User{}
 	err := row.Scan(&user.ID, &user.Email, &user.Username, &user.Password)
-	if err != nil {
-		log.Fatal(err)
-	}
-	return user
+
+	return user, err
 }
 
 // CreateUser functon creates a user
-func CreateUser(db *sql.DB, email, username, password string) sql.Result {
+func CreateUser(db *sql.DB, email, username, password string) (sql.Result, User, error) {
 	var sb strings.Builder
 	sb.WriteString("INSERT INTO USERS ")
 	sb.WriteString("(email, username, password) ")
 	sb.WriteString("VALUES ($1, $2, $3) ")
 	query := sb.String()
-
+	user := User{Email: email, Username: username, Password: password}
 	res, err := db.Exec(query, email, username, password)
-	if err != nil {
-		log.Fatal(err)
+	var (
+		generatedID int64
+		errID       error
+	)
+	if err == nil {
+		generatedID, errID = res.LastInsertId()
+		user.ID = generatedID
+		log.Println(errID)
 	}
-	return res
+	return res, user, err
 
 }
