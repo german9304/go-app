@@ -59,6 +59,12 @@ func register(w http.ResponseWriter, r *http.Request) {
 		password := r.FormValue("password")
 		log.Printf("Username: %v, email: %v, password: %v \n", username, email, password)
 		log.Println("redirecting")
+		db, ok := apiserver.Global["db"]
+		if !ok {
+			log.Fatal("element not found")
+		}
+		row := models.CreateUser(db.(*sql.DB), email, username, password)
+		log.Println(row.LastInsertId())
 		http.Redirect(w, r, "/", http.StatusFound)
 	}
 	rt := authTemplates["register"]

@@ -47,3 +47,19 @@ func GetUser(db *sql.DB, email string) User {
 	}
 	return user
 }
+
+// CreateUser functon creates a user
+func CreateUser(db *sql.DB, email, username, password string) sql.Result {
+	var sb strings.Builder
+	sb.WriteString("INSERT INTO USERS ")
+	sb.WriteString("(email, username, password) ")
+	sb.WriteString("VALUES ($1, $2, $3) ")
+	query := sb.String()
+
+	res, err := db.Exec(query, email, username, password)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return res
+
+}
