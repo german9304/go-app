@@ -44,7 +44,7 @@ func login(w http.ResponseWriter, r *http.Request) {
 		// Setting the cookie for session and testing
 		if user.Password == password {
 			userID := int(user.ID)
-			cookie := http.Cookie{Name: "userId", Value: strconv.Itoa(userID)}
+			cookie := http.Cookie{Name: "userID", Value: strconv.Itoa(userID)}
 			log.Println(cookie.Value)
 			log.Println("user is authenticated")
 			http.SetCookie(w, &cookie)

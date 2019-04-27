@@ -67,7 +67,15 @@ func createProduct(w http.ResponseWriter, r *http.Request) {
 		if !ok {
 			log.Fatal("element not found")
 		}
-		res := models.InsertProduct(db.(*sql.DB), qty, 1, name, description)
+		userCookie, err := r.Cookie("userID")
+		if err != nil {
+			log.Fatal(err, "error here")
+		}
+		user, err := models.GetUser(db.(*sql.DB), userCookie.Value)
+		if err != nil {
+			log.Fatal(err)
+		}
+		res := models.InsertProduct(db.(*sql.DB), qty, user.ID, name, description)
 		log.Println(res)
 		product := models.Product{Name: name, Quantity: qty, Description: description}
 		fmt.Printf("New Product: %v", product)

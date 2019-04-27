@@ -33,13 +33,23 @@ func GetAllUsers(db *sql.DB) []User {
 }
 
 // GetUser gets user from the database
-func GetUser(db *sql.DB, email string) (User, error) {
+func GetUser(db *sql.DB, data interface{}) (User, error) {
 	var sb strings.Builder
 	sb.WriteString("SELECT * FROM USERS ")
-	sb.WriteString("WHERE email = $1 ")
-	query := sb.String()
-
-	row := db.QueryRow(query, email)
+	var row *sql.Row
+	// Checking type of data
+	switch v := data.(type) {
+	case int64:
+		sb.WriteString("WHERE id = $1 ")
+		query := sb.String()
+		row = db.QueryRow(query, v)
+	case string:
+		sb.WriteString("WHERE email = $1 ")
+		query := sb.String()
+		row = db.QueryRow(query, v)
+	default:
+		log.Fatal("Incorrect type")
+	}
 	user := User{}
 	err := row.Scan(&user.ID, &user.Email, &user.Username, &user.Password)
 
