@@ -39,9 +39,10 @@ func GetUser(db *sql.DB, data interface{}) (User, error) {
 	var row *sql.Row
 	// Checking type of data
 	switch v := data.(type) {
-	case int64:
+	case int:
 		sb.WriteString("WHERE id = $1 ")
 		query := sb.String()
+		log.Println("user here int64")
 		row = db.QueryRow(query, v)
 	case string:
 		sb.WriteString("WHERE email = $1 ")

@@ -71,9 +71,13 @@ func createProduct(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			log.Fatal(err, "error here")
 		}
-		user, err := models.GetUser(db.(*sql.DB), userCookie.Value)
+		i, err := strconv.Atoi(userCookie.Value)
 		if err != nil {
-			log.Fatal(err)
+			log.Fatal(err, "error here")
+		}
+		user, err := models.GetUser(db.(*sql.DB), i)
+		if err != nil {
+			log.Fatal("error here ", err)
 		}
 		res := models.InsertProduct(db.(*sql.DB), qty, user.ID, name, description)
 		log.Println(res)

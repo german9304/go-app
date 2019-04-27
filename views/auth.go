@@ -81,7 +81,12 @@ func register(w http.ResponseWriter, r *http.Request) {
 }
 
 func logout(w http.ResponseWriter, r *http.Request) {
-
+	// logout
+	cookie := http.Cookie{Name: "userID", MaxAge: -1}
+	log.Println(cookie)
+	http.SetCookie(w, &cookie)
+	http.Redirect(w, r, "/", http.StatusFound)
+	return
 }
 
 // LoginRequired checks if user is athenticated middleware
@@ -89,13 +94,13 @@ func loginRequired(fn func(w http.ResponseWriter, r *http.Request)) http.Handler
 	return func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == "POST" {
 			log.Println("login required")
-			cookie, err := r.Cookie("userId")
+			cookie, err := r.Cookie("userID")
 			if err != nil {
 				log.Println(err)
 				http.Redirect(w, r, "/login", http.StatusFound)
 				return
 			}
-			log.Println(cookie)
+			log.Println(cookie.Value)
 		}
 		fn(w, r)
 	}
@@ -105,4 +110,5 @@ func loginRequired(fn func(w http.ResponseWriter, r *http.Request)) http.Handler
 func InitAuthApp(app apiserver.AppI) {
 	app.Get("/login", login)
 	app.Get("/register", register)
+	app.Get("/logout", logout)
 }
